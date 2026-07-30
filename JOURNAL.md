@@ -67,3 +67,27 @@ instead of returning `None` without writing to the database.
 The current test suite has no endpoint integration-test harness, so I still need to
 decide whether Week 9 route-level coverage belongs in `tests/security/` or should use a
 smaller mocked route test alongside the service regression.
+
+## Week 9 — Solution building & PR submission
+
+### Check-in 1 (mid-week)
+
+**Current progress:**
+I implemented the ownership-scoped profile lookup in `create_review()`, added the route's
+404 response for missing or unowned profiles, and prevented background processing from
+being scheduled after rejection. The focused service and route tests pass.
+
+**Next steps:**
+Open the pull request, request peer or mentor feedback, address any applicable review
+comments, and complete Check-in 2 with the final PR link and validation results.
+
+**Blockers:**
+The repository-wide suite currently has unrelated pre-existing failures, and GNU Make
+is not installed in the local PowerShell environment. I ran the underlying pytest
+command directly and confirmed the seven review-creation tests pass.
+
+---
+
+### Check-in 2 (end of week)
+
+To be completed when the pull request is finalized.
