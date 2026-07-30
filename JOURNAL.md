@@ -48,3 +48,22 @@ otherwise — so the write path is scoped exactly like the read paths already ar
   belongs in `create_review()` where the existing read-path checks already live.
 - **Testing is straightforward.** The repo already has service-level tests, so I
   can add a case for the cross-user rejection alongside the existing happy path.
+
+## Week 8 — Reproduction & solution planning
+
+**Reproduction commit link:** [9d6a50b](https://github.com/Kienda/pathreview/commit/9d6a50b76cbbf3ce4798b3de0842ee648938475f)
+
+**Reproduction summary:**
+I configured the review service test as if an ownership-scoped profile lookup found no
+profile for the current user, then called `create_review()` with another user's profile
+ID. The test fails because the service still creates and returns a pending review
+instead of returning `None` without writing to the database.
+
+**PLAN.md link:** [PLAN.md](https://github.com/Kienda/pathreview/blob/fix/163-review-profile-ownership/PLAN.md)
+
+**Walkthrough video (recommended):** Not recorded.
+
+**Blockers or open questions:**
+The current test suite has no endpoint integration-test harness, so I still need to
+decide whether Week 9 route-level coverage belongs in `tests/security/` or should use a
+smaller mocked route test alongside the service regression.
