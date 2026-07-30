@@ -23,7 +23,9 @@ class TestReviewService:
         session.add = Mock()
         session.commit = AsyncMock()
         session.refresh = AsyncMock()
-        session.execute = AsyncMock()
+        result = Mock()
+        result.scalars.return_value.first.return_value = Mock()
+        session.execute = AsyncMock(return_value=result)
         return session
 
     @pytest.fixture
@@ -67,6 +69,7 @@ class TestReviewService:
             MockReview.assert_called()
             call_kwargs = MockReview.call_args[1]
             assert call_kwargs['status'] == "pending"
+            mock_db_session.execute.assert_awaited_once()
 
     @pytest.mark.security
     @pytest.mark.asyncio
