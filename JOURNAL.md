@@ -6,7 +6,7 @@
 
 **Issue title:** Review creation does not verify profile ownership
 
-**Tier:** [ ] Tier 1  [x] Tier 2  [ ] Tier 3
+**Tier:** [ ] Tier 1 [x] Tier 2 [ ] Tier 3
 
 **Problem summary:**
 The `POST /reviews` endpoint passes the authenticated user's ID down to
@@ -90,4 +90,25 @@ command directly and confirmed the seven review-creation tests pass.
 
 ### Check-in 2 (end of week)
 
-To be completed when the pull request is finalized.
+**PR link:** https://github.com/ascherj/pathreview/pull/409
+
+**Branch:** `fix/163-review-profile-ownership`
+
+**What you built:**
+I added an ownership-scoped profile lookup before review creation. Missing and
+unowned profiles now receive the same 404 response, no review is persisted, and
+no background processing task is scheduled.
+
+**Tests added or updated:**
+Updated `tests/unit/test_review_service.py` with owned-profile success and
+cross-user rejection coverage. Added `tests/unit/test_review_routes.py` to verify
+that the endpoint returns 404 and does not schedule a background task when
+ownership validation fails.
+
+**Self-review confirmation:** [ ] make check passes [ ] make test-unit passes
+
+The focused review-creation test suite passes with 7 tests passed and 14
+deselected. Repository-wide checks report documented pre-existing failures
+unrelated to this change.
+
+**Draft PR feedback received from:** none
