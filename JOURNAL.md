@@ -112,3 +112,53 @@ deselected. Repository-wide checks report documented pre-existing failures
 unrelated to this change.
 
 **Draft PR feedback received from:** none
+
+### Reflection
+
+**What was harder than you expected?**
+Writing the failing test before writing the fix. The fix itself was a short,
+well-scoped change, but reproducing the bug as a test inside the repo's existing
+fixture and mocking setup took the most effort. I had to make the test fail for
+the *right* reason — because `create_review()` ignored the authenticated user and
+persisted a review it should have rejected — rather than because I had wired the
+profile lookup or the mocks incorrectly. Getting a red test that genuinely
+described the authorization flaw was harder than making it green.
+
+**What did you learn about working in a large codebase?**
+The existing code is the spec. `get_review()` and `list_reviews()` in the same
+module already did ownership scoping correctly by joining `Profile` and filtering
+on `Profile.user_id == user_id`, so my job was not to invent an approach — it was
+to make the write path match the pattern the read paths had already established.
+On my own projects I decide the convention; here the convention already existed,
+and the correct fix was the one that looked like it had always been there. That
+also made the change easier to review, because a maintainer could see it as the
+missing half of a pattern rather than as something new.
+
+**How did AI tools help — and where did they fall short?**
+AI was most useful for orientation. In an unfamiliar codebase it helped me locate
+the relevant files quickly and understand how the route, the service layer, and
+the `Profile`/`Review` models connected, which cut down the time between reading
+the issue and being able to reason about it concretely.
+
+Where it fell short was the judgment calls. Deciding that the check belonged in
+`create_review()` rather than in the route, choosing to return 404 for both
+missing and unowned profiles so the endpoint does not leak whether a profile
+exists, and framing the issue as Tier 2 because it crosses modules — AI could lay
+out the options, but it could not own those decisions or defend them in a pull
+request. Those had to be mine, because I am the one who has to justify them.
+
+**What would you do differently if you started over?**
+I would sort out the test and tooling setup first. I did not confirm that GNU Make
+was available or establish a clean baseline for the repository-wide suite until
+Week 9, so verification turned into a late blocker instead of a background detail
+— I ended up running the underlying pytest command directly and documenting
+pre-existing failures under time pressure. Ten minutes of environment checks in
+Week 7, before choosing the issue, would have removed that entirely.
+
+**What are you most proud of from this module?**
+Taking a real security bug all the way through. I found a broken object-level
+authorization flaw in production code, reproduced it with a failing test, fixed
+it at the layer where the check actually belongs, covered both the service and
+the route, and submitted the PR upstream. The change is small, but the reasoning
+behind it — why it is a vulnerability, where the enforcement goes, and what the
+client should see — is entirely mine.
