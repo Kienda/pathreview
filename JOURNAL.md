@@ -113,6 +113,31 @@ unrelated to this change.
 
 **Draft PR feedback received from:** none
 
+## Week 10 — Iteration & reflection
+
+### Reviewer feedback
+
+**Feedback received:** [ ] Yes  [x] No — still awaiting review
+
+**Summary of feedback:**
+No review came in. PR #409 has been open on `ascherj/pathreview` since Week 9 and
+still shows zero review comments and zero issue comments, and no maintainer has
+requested changes or approved it. I checked the PR again at the end of Week 10 to
+confirm before writing this entry.
+
+**How you responded:**
+No changes were required, so nothing was revised in response to feedback. I used
+the week instead to re-read my own diff as a reviewer would and to confirm the
+branch is still in a mergeable, reviewable state: the change remains scoped to
+`create_review()` plus the route's 404 path, the seven focused review-creation
+tests still pass, and the PR description still states the vulnerability, the
+chosen enforcement layer, and the reasoning for returning 404 on both missing and
+unowned profiles. If a maintainer comments after the course deadline, the
+outstanding question I would expect — and would be ready to defend — is whether
+404 or 403 is the right status for an unowned profile.
+
+---
+
 ### Reflection
 
 **What was harder than you expected?**
